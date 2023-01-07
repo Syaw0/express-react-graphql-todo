@@ -21,7 +21,7 @@ const scheme = buildSchema(`
     getTodos:GetTodo!
   }
   type Mutation{
-    addTodo(value:String):Boolean
+    addTodo(value:String):GetTodo!
     completeTodo(id:ID!,value:String):GetTodo!
   }
 
@@ -50,7 +50,7 @@ const root = {
     data.inProgress.push({ value, id: newId });
     data.lastId = newId;
     writeFileSync(__dirname + "/db.json", JSON.stringify(data, null, 4));
-    return true;
+    return data;
   },
   getTodos() {
     const data = readDb();
