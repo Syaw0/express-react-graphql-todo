@@ -1,10 +1,13 @@
 import React from "react";
 
 const Todo = ({ data }) => {
+  const handleChange = (e) => {
+    console.log(data.id);
+  };
   return (
     <div className="todo">
-      <h6>something must do</h6>
-      <input type="checkbox" />
+      <p>{data.value}</p>
+      <input onChange={handleChange} type="checkbox" />
     </div>
   );
 };

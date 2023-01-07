@@ -12,7 +12,7 @@ const globalStyle = globalCss({
     },
   },
   ".dropdown": {
-    "& h5": {
+    "& p": {
       cursor: "pointer",
     },
     marginBottom: "1rem",
@@ -20,11 +20,16 @@ const globalStyle = globalCss({
   ".todoHolder": {
     // height: "10rem",
     overflow: "hidden",
-    backgroundColor: "Pink",
+    backgroundColor: "lightGray",
+    borderRadius: "6px",
+    padding: "1rem",
   },
   ".todo": {
     display: "flex",
     flexDirection: "row",
+    "& input ": {
+      marginLeft: "1rem",
+    },
   },
 });
 

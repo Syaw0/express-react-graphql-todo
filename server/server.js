@@ -3,7 +3,7 @@ const { graphqlHTTP } = require("express-graphql");
 const { buildSchema } = require("graphql");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { readFileSync } = require("fs");
+const { readFileSync, writeFileSync } = require("fs");
 const app = express();
 
 app.use(
@@ -17,11 +17,56 @@ app.use(
 app.use(bodyParser.json());
 
 const scheme = buildSchema(`
+  type Query{
+    getTodos:GetTodo!
+  }
+  type Mutation{
+    addTodo(value:String):Boolean
+    completeTodo(id:ID!,value:String):Boolean
+  }
+
+  type GetTodo {
+    completed:[Todo]!
+    inProgress:[Todo]!
+  }
+
+  type Todo{
+    value:String!
+    id:ID!
+  }
 
 
 `);
 
-const root = {};
+const readDb = () => {
+  const data = readFileSync(__dirname + "/db.json", { encoding: "utf-8" });
+  return JSON.parse(data);
+};
+
+const root = {
+  addTodo({ value }) {
+    const data = readDb();
+    const newId = data.lastId + 1;
+    data.inProgress.push({ value, id: newId });
+    data.lastId = newId;
+    writeFileSync(__dirname + "/db.json", JSON.stringify(data, null, 4));
+    return true;
+  },
+  getTodos() {
+    const data = readDb();
+    delete data.lastId;
+    console.log(data);
+    return data;
+  },
+  completeTodo({ id, value }) {
+    console.log(id, value);
+    const data = readDb();
+    data.inProgress = data.inProgress.filter((to) => to.id != id);
+    data.completed.push({ value, id });
+    writeFileSync(__dirname + "/db.json", JSON.stringify(data, null, 4));
+    return true;
+  },
+};
 
 app.use("/", (req, res, next) => {
   console.log(req.body, req.method);

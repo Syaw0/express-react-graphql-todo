@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Todo from "./todo";
 
 const Dropdown = ({ header, todos, type }) => {
+  console.log(todos);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const todoHolder = useRef(null);
   const todoHolderOpening = () => {
@@ -15,11 +16,18 @@ const Dropdown = ({ header, todos, type }) => {
   };
   return (
     <div className="dropdown">
-      <h5 onClick={todoHolderOpening}>{header}</h5>
+      <p onClick={todoHolderOpening}>{header}</p>
       <div className="todoHolder" ref={todoHolder}>
         {todos &&
           todos.length != 0 &&
-          todos.map((t) => <Todo data={t} isCompleted={type == "completed"} />)}
+          todos.map((t, i) => (
+            <Todo
+              key={t.id}
+              data={t}
+              id={t.id}
+              isCompleted={type == "completed"}
+            />
+          ))}
       </div>
     </div>
   );
