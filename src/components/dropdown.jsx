@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import Todo from "./todo";
 
 const Dropdown = ({ header, todos, type }) => {
-  console.log(todos);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const todoHolder = useRef(null);
   const todoHolderOpening = () => {

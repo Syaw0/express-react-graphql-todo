@@ -22,7 +22,7 @@ const scheme = buildSchema(`
   }
   type Mutation{
     addTodo(value:String):Boolean
-    completeTodo(id:ID!,value:String):Boolean
+    completeTodo(id:ID!,value:String):GetTodo!
   }
 
   type GetTodo {
@@ -55,23 +55,22 @@ const root = {
   getTodos() {
     const data = readDb();
     delete data.lastId;
-    console.log(data);
     return data;
   },
   completeTodo({ id, value }) {
-    console.log(id, value);
+    console.log("this is", id, value);
     const data = readDb();
     data.inProgress = data.inProgress.filter((to) => to.id != id);
     data.completed.push({ value, id });
     writeFileSync(__dirname + "/db.json", JSON.stringify(data, null, 4));
-    return true;
+    return data;
   },
 };
 
-app.use("/", (req, res, next) => {
-  console.log(req.body, req.method);
-  next();
-});
+// app.use("/", (req, res, next) => {
+//   console.log(req.body, req.method);
+//   next();
+// });
 
 app.use(
   "/graphql",
