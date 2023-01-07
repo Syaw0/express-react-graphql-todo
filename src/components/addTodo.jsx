@@ -17,13 +17,13 @@ const AddTodo = () => {
   };
 
   return (
-    <>
-      <label htmlFor="inp">new todo</label>
+    <div id="addTodo">
+      <label htmlFor="inp">Write New Todo</label>
       <input id="inp" type="text" value={inp} onChange={handleChange} />
       <button type="button" onClick={handleClick}>
-        add TODO
+        ADD TODO
       </button>
-    </>
+    </div>
   );
 };
 
