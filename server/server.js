@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { readFileSync, writeFileSync } = require("fs");
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(
   cors({
@@ -14,6 +16,8 @@ app.use(
     methods: ["GET", "POST", "OPTIONS"],
   })
 );
+app.use(express.static("public"));
+
 app.use(bodyParser.json());
 
 const scheme = buildSchema(`
@@ -67,11 +71,6 @@ const root = {
   },
 };
 
-// app.use("/", (req, res, next) => {
-//   console.log(req.body, req.method);
-//   next();
-// });
-
 app.use(
   "/graphql",
   graphqlHTTP({
@@ -82,9 +81,11 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.send("data");
+  res.sendFile(__dirname + "/../public/index.html");
 });
-
-app.listen(3000, () => {
-  console.log("listen on 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(
+    ` server is listening on localhost:${port} \n graphql listen on /graphql`
+  );
 });
