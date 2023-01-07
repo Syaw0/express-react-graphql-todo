@@ -29,3 +29,9 @@ just clone the repo and then run :
 ```bash
 npm run server:start
 ```
+</br>
+if you want to develop app use dev environment:
+
+```bash
+npm run server:dev
+```
